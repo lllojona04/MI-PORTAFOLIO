@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>Jona Photos | Fotografía</title>
+<meta name="description" content="Portfolio fotográfico de Jonathan. Fotografía deportiva y de naturaleza.">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="favicon.png">
+
+<style>
+@media(max-width:768px){
+  .main-title{font-size:1.8rem;letter-spacing:6px}
+  .grid-fotos{grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px;padding:20px}
+  .img-container{height:320px}
+  nav ul li{font-size:.65rem;margin:0 8px}
+  #buscador.active{width:160px}
+}
+@media(max-width:480px){
+  .nav-bar{flex-direction:column;gap:15px}
+  .main-title{font-size:1.5rem}
+  .img-container{height:260px}
+  .btn-lupa svg{width:16px;height:16px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1 class="main-title">jona.photos</h1>
+
+  <div class="nav-bar">
+
+    <nav>
+      <ul id="menu-categorias">
+        <li class="active" data-categoria="todos">Todos</li>
+        <li data-categoria="deporte">Deporte</li>
+      </ul>
+    </nav>
+
+    <div class="search-wrapper">
+      <input id="buscador" placeholder="Buscar álbum..." aria-label="Buscar álbum">
+      <button id="btn-lupa" onclick="toggleSearch()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+      </button>
+    </div>
+
+  </div>
+</header>
+
+<main class="grid-fotos" id="galeria-grid"></main>
+
+<footer style="text-align:center;padding:40px 20px;font-size:.7rem;color:#999;letter-spacing:2px">
+© 2026 JONA.PHOTOS — ALL RIGHTS RESERVED
+</footer>
+
+<script src="data.js"></script>
+
+<script>
+const isMobile = innerWidth <= 768;
+const $ = s => document.querySelector(s);
+
+function toggleSearch(){
+  const i = $("#buscador");
+  i.classList.toggle("active");
+  if(i.classList.contains("active")){
+    i.focus();
+    if(isMobile) i.style.width="140px";
+  }
+}
+
+function mostrarProyectos(f="todos",b=""){
+  const g=$("#galeria-grid");
+  g.innerHTML="";
+
+  const data = proyectos.filter(p =>
+    (f==="todos"||p.categoria===f) &&
+    p.titulo.toLowerCase().includes(b.toLowerCase())
+  );
+
+  if(!data.length){
+    g.innerHTML="<p style='text-align:center;grid-column:1/-1;color:#999'>No hay resultados</p>";
+    return;
+  }
+
+  data.forEach((p,i)=>{
+    const d=document.createElement("div");
+    d.className="card";
+    d.style.opacity=0;
+    d.style.transform="translateY(15px)";
+
+    setTimeout(()=>{
+      d.style.transition=".5s";
+      d.style.opacity=1;
+      d.style.transform="translateY(0)";
+    },i*80);
+
+    d.onclick=()=>location.href=`proyecto.html?id=${p.id}`;
+
+    d.innerHTML=`
+      <div class="img-container"><img src="${p.portada}" alt="${p.titulo}"></div>
+      <div class="card-info"><h3>${p.titulo}</h3><span>${p.fecha}</span></div>
+    `;
+
+    g.appendChild(d);
+  });
+}
+
+$("#buscador").oninput=e=>{
+  const c=$("#menu-categorias .active").dataset.categoria;
+  mostrarProyectos(c,e.target.value);
+};
+
+document.querySelectorAll("#menu-categorias li").forEach(li=>{
+  li.onclick=()=>{
+    $("#menu-categorias .active").classList.remove("active");
+    li.classList.add("active");
+    mostrarProyectos(li.dataset.categoria,$("#buscador").value);
+  };
+});
+
+mostrarProyectos();
+</script>
+
+</body>
+</html>
