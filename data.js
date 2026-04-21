@@ -15,7 +15,7 @@ const proyectos = [
     portada: IMG + "P1010110.webp",
 
     galeria: [
-      "P1010115.webp", // Asegúrate que en GitHub NO tenga espacio antes del punto
+      "P1010115 .webp", // Asegúrate que en GitHub NO tenga espacio antes del punto
       "P1010121.png", "P1010111.png", "P1010112.png", "P1010113.png", "P1010114.png",
       "P1010116.png", "P1010118.png", "P1010117.png", "P1010124.png", "P1010125.png",
       "P1010120.png", "P1010122.png", "P1010126.png", "P1010127.png", "P1010128.png",
