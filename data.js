@@ -14,7 +14,7 @@ const proyectos = [
         "Fútbol femenino en estado puro. Intensidad y emoción.\n\nVictoria por 3-2 en El Sardinero."
     },
 
-    portada: IMG + "P1010110.png",
+    portada: IMG + "P1010110.webp",
 
     galeria: [
       "P1010115.png","P1010121.png",/* P1010119.png omitida */
