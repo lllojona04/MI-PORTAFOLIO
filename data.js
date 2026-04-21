@@ -17,18 +17,18 @@ const proyectos = [
     portada: IMG + "P1010110.webp",
 
     galeria: [
-      "P1010115.webp","P1010121.png",/* P1010119.png omitida */
-      "P1010111.png","P1010112.png","P1010113.png","P1010114.png",
-      "P1010116.png","P1010118.png","P1010117.png","P1010124.png",
-      "P1010125.png","P1010120.png","P1010122.png","P1010126.png",
-      "P1010127.png","P1010128.png","P1010129.png","P1010130.png",
-      "P1010131.png","P1010132.png","P1010133.png","P1010134.png",
-      "P1010154.png","P1010155.png","P1010156.png","P1010135.png",
-      "P1010158.png","P1010136.png","P1010137.png","P1010138.png",
-      "P1010139.png","P1010140.png","P1010157.png","P1010152.png",
-      "P1010153.png","P1010141.png","P1010142.png","P1010143.png",
-      "P1010144.png","P1010145.png","P1010146.png","P1010147.png",
-      "P1010148.png","P1010149.png","P1010150.png","P1010151.png"
+      "P1010115.webp", "P1010121.webp", "P1010111.webp", "P1010112.webp", 
+      "P1010113.webp", "P1010114.webp", "P1010116.webp", "P1010118.webp", 
+      " বরা P1010117.webp", "P1010124.webp", "P1010125.webp", "P1010120.webp", 
+      "P1010122.webp", "P1010126.webp", "P1010127.webp", "P1010128.webp", 
+      "P1010129.webp", "P1010130.webp", "P1010131.webp", "P1010132.webp", 
+      "P1010133.webp", "P1010134.webp", "P1010154.webp", "P1010155.webp", 
+      "P1010156.webp", "P1010135.webp", "P1010158.webp", "P1010136.webp", 
+      "P1010137.webp", "P1010138.webp", "P1010139.webp", "P1010140.webp", 
+      "P1010157.webp", "P1010152.webp", "P1010153.webp", "P1010141.webp", 
+      "P1010142.webp", "P1010143.webp", "P1010144.webp", "P1010145.webp", 
+      "P1010146.webp", "P1010147.webp", "P1010148.webp", "P1010149.webp", 
+      "P1010150.webp", "P1010151.webp"
     ].map(f => IMG + f)
   }
 ];
