@@ -3,25 +3,55 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-
 <title>Proyecto | Jona Photos</title>
-<meta name="description" content="Proyecto fotográfico de Jona Photos">
 <link rel="stylesheet" href="style.css">
 
 <style>
-#proy-desc{white-space:pre-line}
-
-@media(max-width:768px){
-  .hero-content h1{font-size:2rem;letter-spacing:6px}
-  .hero .desc{font-size:.9rem;padding:0 10px}
-  .btn-back{top:20px;left:20px;font-size:.65rem;padding:10px 15px}
-  .btn-gallery{padding:15px 35px;font-size:.75rem}
+/* Mejora de legibilidad y limpieza */
+.hero {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-size: cover;
+    background-position: center;
 }
 
-@media(max-width:480px){
-  .hero{height:80vh}
-  .hero-content h1{font-size:1.6rem}
-  .btn-nav{font-size:30px}
+/* Capa oscura para que el texto no se pierda con el fondo */
+.hero::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Oscurece un poco la portada */
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2; /* Sube el texto por encima de la capa oscura */
+    max-width: 800px;
+    padding: 20px;
+}
+
+#proy-desc { white-space: pre-line; }
+
+/* Galería a pantalla completa y rápida */
+.modal {
+    background: #000; /* Fondo totalmente negro para que resalte la foto */
+}
+
+.img-carrusel {
+    max-height: 90vh;
+    max-width: 95vw;
+    transition: opacity 0.15s ease-in-out; /* Más rápido que antes */
+    user-select: none;
+}
+
+@media(max-width:768px){
+  .hero-content h1{font-size:1.8rem; letter-spacing:4px}
+  .hero-content .desc{font-size:0.9rem; line-height:1.4}
+  .btn-nav { font-size: 40px; padding: 20px; } /* Flechas más fáciles de tocar */
 }
 </style>
 </head>
@@ -29,83 +59,95 @@
 <body>
 
 <section id="hero-proyecto" class="hero">
-<a href="index.html" class="btn-back">← VOLVER</a>
+    <a href="index.html" class="btn-back">← VOLVER</a>
 
-<div class="hero-content">
-  <h1 id="t"></h1>
-  <p class="fecha" id="f"></p>
-  <p class="desc" id="d"></p>
-
-  <button class="btn-gallery" onclick="openGal()">VER GALERÍA</button>
-</div>
+    <div class="hero-content">
+        <h1 id="t"></h1>
+        <p class="fecha" id="f"></p>
+        <p class="desc" id="d"></p>
+        <button class="btn-gallery" onclick="openGal()">VER GALERÍA</button>
+    </div>
 </section>
 
 <div id="m" class="modal" onclick="bgClose(event)">
-  <span class="close-modal" onclick="closeGal()">&times;</span>
-  <button class="btn-nav prev" onclick="img(-1)">&#10094;</button>
-  <img id="i" class="img-carrusel">
-  <button class="btn-nav next" onclick="img(1)">&#10095;</button>
+    <span class="close-modal" onclick="closeGal()">&times;</span>
+    <button class="btn-nav prev" onclick="img(-1)">&#10094;</button>
+    <img id="i" class="img-carrusel">
+    <button class="btn-nav next" onclick="img(1)">&#10095;</button>
 </div>
 
 <script src="data.js"></script>
 
 <script>
-const m=innerWidth<=768,
-$=s=>document.querySelector(s),
-p=proyectos.find(x=>x.id==new URLSearchParams(location.search).get("id"));
+const m = window.innerWidth <= 768,
+      $ = s => document.querySelector(s),
+      params = new URLSearchParams(location.search),
+      p = proyectos.find(x => x.id == params.get("id"));
 
-if(!p)location="index.html";
+if(!p) location = "index.html";
 
-$("#t").textContent=p.titulo;
-$("#f").textContent=p.fecha;
-$("#d").textContent=m?p.descripcion.mobile:p.descripcion.desktop;
-$("#hero-proyecto").style.backgroundImage=`url('${p.portada}')`;
-document.title=p.titulo+" | Jona Photos";
+// Cargar datos iniciales
+$("#t").textContent = p.titulo;
+$("#f").textContent = p.fecha;
+$("#d").textContent = m ? p.descripcion.mobile : p.descripcion.desktop;
+$("#hero-proyecto").style.backgroundImage = `url('${p.portada}')`;
+document.title = p.titulo + " | Jona Photos";
 
-let i=0,modal=$("#m"),imgEl=$("#i");
+let idx = 0;
+const modal = $("#m"), imgEl = $("#i");
+
+// --- FUNCIÓN MÁGICA: Precarga de imágenes ---
+// Esto hace que Vercel descargue las fotos antes de que les des click
+function preloadImages() {
+    p.galeria.forEach(url => {
+        const img = new Image();
+        img.src = url;
+    });
+}
+preloadImages(); // Se ejecuta al abrir la página
 
 function openGal(){
-  modal.style.display="flex";
-  i=0;show();
-  document.body.style.overflow="hidden";
+    modal.style.display = "flex";
+    idx = 0;
+    show();
+    document.body.style.overflow = "hidden";
 }
 
 function closeGal(){
-  modal.style.display="none";
-  document.body.style.overflow="auto";
+    modal.style.display = "none";
+    document.body.style.overflow = "auto";
 }
 
-function bgClose(e){if(e.target==modal)closeGal()}
+function bgClose(e){ if(e.target == modal) closeGal(); }
 
 function img(n){
-  i=(i+n+p.galeria.length)%p.galeria.length;
-  show();
+    idx = (idx + n + p.galeria.length) % p.galeria.length;
+    show();
 }
 
 function show(){
-  imgEl.style.opacity=0;
-  setTimeout(()=>{
-    imgEl.src=p.galeria[i];
-    imgEl.style.opacity=1;
-  },120);
+    // Cambio casi instantáneo
+    imgEl.style.opacity = 0.5; 
+    imgEl.src = p.galeria[idx];
+    imgEl.onload = () => { imgEl.style.opacity = 1; };
 }
 
-document.addEventListener("keydown",e=>{
-  if(modal.style.display=="flex"){
-    if(e.key=="Escape")closeGal();
-    if(e.key=="ArrowRight")img(1);
-    if(e.key=="ArrowLeft")img(-1);
-  }
+// Teclado
+document.addEventListener("keydown", e => {
+    if(modal.style.display == "flex"){
+        if(e.key == "Escape") closeGal();
+        if(e.key == "ArrowRight") img(1);
+        if(e.key == "ArrowLeft") img(-1);
+    }
 });
 
-let sx=0;
-modal.ontouchstart=e=>sx=e.touches[0].clientX;
-modal.ontouchend=e=>{
-  let dx=e.changedTouches[0].clientX-sx;
-  if(dx<-50)img(1);
-  if(dx>50)img(-1);
+// Swipe para móvil
+let sx = 0;
+modal.ontouchstart = e => sx = e.touches[0].clientX;
+modal.ontouchend = e => {
+    let dx = e.changedTouches[0].clientX - sx;
+    if(Math.abs(dx) > 50) img(dx < 0 ? 1 : -1);
 };
 </script>
-
 </body>
 </html>
