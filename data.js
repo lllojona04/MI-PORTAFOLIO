@@ -17,7 +17,7 @@ const proyectos = [
     portada: IMG + "P1010110.webp",
 
     galeria: [
-      "P1010115.png","P1010121.png",/* P1010119.png omitida */
+      "P1010115.webp","P1010121.png",/* P1010119.png omitida */
       "P1010111.png","P1010112.png","P1010113.png","P1010114.png",
       "P1010116.png","P1010118.png","P1010117.png","P1010124.png",
       "P1010125.png","P1010120.png","P1010122.png","P1010126.png",
